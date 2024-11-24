@@ -1,0 +1,22 @@
+﻿@page "/product-list"
+@inject MediatR.IMediator _mediator
+
+<h3>Product List</h3>
+
+<ul>
+    @foreach(Product product in products)
+    {
+        <li>@product.ProductName</li>
+    }
+    
+</ul>
+
+@code {
+    List<Product> products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await _mediator.Send(new GetProductListQuery());
+    }
+
+}
