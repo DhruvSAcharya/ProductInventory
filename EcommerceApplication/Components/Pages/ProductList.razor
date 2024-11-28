@@ -1,6 +1,5 @@
 ﻿@page "/product-list"
 @using System.Linq
-@inject HttpClient Http
 @inject IHttpClientFactory ClientFactory
 
 <h3>Product List</h3>
@@ -30,7 +29,7 @@
     {
         try
         {
-            Http = ClientFactory.CreateClient("AuthenticatedClient");
+            var Http = ClientFactory.CreateClient("AuthenticatedClient");
             var request = new HttpRequestMessage(HttpMethod.Get, "api/products");
             HttpResponseMessage httpResponseMessage = await Http.SendAsync(request);
 

@@ -9,8 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddTransient<AuthorizationMessageHandler>();
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration.GetSection("AppSetting")["ServiceUrl"]) });
-builder.Services.AddHttpClient("AuthenticatedClient")
+builder.Services.AddHttpClient("AuthenticatedClient", sp => new HttpClient { BaseAddress = new Uri(builder.Configuration.GetSection("AppSetting")["ServiceUrl"]) })
     .AddHttpMessageHandler<AuthorizationMessageHandler>();
 
 
