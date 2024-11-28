@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
-    <ProjectReference Include="..\DataAccess\Repository.csproj" />
+    <ProjectReference Include="..\CommonUtilies\CommonUtilities.csproj" />
   </ItemGroup>
 
 </Project>

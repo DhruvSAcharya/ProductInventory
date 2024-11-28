@@ -28,7 +28,7 @@ namespace Repository
             return _appDbContext.Products.Find(id);
         }
 
-        public Product CreateProduct(Product product)
+        public Product AddProduct(Product product)
         {
             _appDbContext.Products.Add(product);
             _appDbContext.SaveChanges();
@@ -36,7 +36,7 @@ namespace Repository
             return product;
         }
 
-        public Product UpdateProductInfo(int id, Product product)
+        public Product UpdateProductById(int id, Product product)
         {
             Product newp = _appDbContext.Products.Find(id);
             newp.Price = product.Price;

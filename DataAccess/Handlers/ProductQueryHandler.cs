@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class GetProductListHandler : IRequestHandler<GetProductListQuery, IEnumerable<Product>>
+    public class GetProductListHandler : IRequestHandler<GetProductListQuery, List<Product>>
     {
         private readonly IDataAccess _data;
         public GetProductListHandler(IDataAccess data)
         {
             _data = data;
         }
-        public Task<IEnumerable<Product>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
+        public Task<List<Product>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_data.GetAllProducts());
+            return Task.FromResult(_data.GetAllProducts().ToList());
         }
     }
 

@@ -11,5 +11,8 @@ namespace Repository
     {
         IEnumerable<Product> GetAllProducts();
         Product GetProductbyId(int id);
+        Product AddProduct(Product product);
+        Product UpdateProductById(int id, Product product);
+        bool DeleteProductById(int id);
     }
 }

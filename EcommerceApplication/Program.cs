@@ -1,14 +1,18 @@
+using CommonUtilies;
 using EcommerceApplication.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Repository;
+using EcommerceApplication.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddSingleton<IDataAccess,DataAccess>();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DataAccess).Assembly));
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddTransient<AuthorizationMessageHandler>();
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration.GetSection("AppSetting")["ServiceUrl"]) });
+builder.Services.AddHttpClient("AuthenticatedClient")
+    .AddHttpMessageHandler<AuthorizationMessageHandler>();
+
 
 var app = builder.Build();
 

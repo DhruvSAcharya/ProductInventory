@@ -1,22 +1,55 @@
 ﻿@page "/product-list"
-@inject MediatR.IMediator _mediator
+@using System.Linq
+@inject HttpClient Http
+@inject IHttpClientFactory ClientFactory
 
 <h3>Product List</h3>
 
 <ul>
-    @foreach(Product product in products)
+    @if (products != null)
     {
-        <li>@product.ProductName</li>
+        @foreach (Product product in products)
+        {
+            <li>@product.ProductName</li>
+        }
+
     }
+    else
+    {
+        <h4>@Error</h4>
+    }
+
     
 </ul>
 
 @code {
     List<Product> products;
+    string Error = "Loading...";
 
     protected override async Task OnInitializedAsync()
     {
-        products = await _mediator.Send(new GetProductListQuery());
+        try
+        {
+            Http = ClientFactory.CreateClient("AuthenticatedClient");
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/products");
+            HttpResponseMessage httpResponseMessage = await Http.SendAsync(request);
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+                products = System.Text.Json.JsonSerializer.Deserialize<List<Product>>(jsonResponse);
+                Error = string.Empty;
+            }
+            else
+            {
+                Error = $"Error: {httpResponseMessage.StatusCode} - {httpResponseMessage.ReasonPhrase}";
+            }
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+        
     }
 
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public record GetProductListQuery() : IRequest<IEnumerable<Product>>;
+    public record GetProductListQuery() : IRequest<List<Product>>;
     public record GetProductByIdQuery(int Id) : IRequest<Product>;
 
 }

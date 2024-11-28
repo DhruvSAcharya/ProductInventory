@@ -38,15 +38,12 @@ namespace ProductInventory.Controllers
             return await _mediatR.Send(new GetProductListQuery());
         }
 
-        //[HttpPost]
-        //[Route("products")]
-        //public Product CreateProduct(Product product)
-        //{
-        //    _applicationDbContext.products.Add(product);
-        //    _applicationDbContext.SaveChanges();
-
-        //    return product;
-        //}
+        [HttpPost]
+        [Route("products")]
+        public async Task<Product> CreateProduct(Product product)
+        {
+            return await _mediatR.Send(new AddProductCommand(product));
+        }
 
         [HttpGet]
         [Route("products/{id}")]
@@ -55,29 +52,26 @@ namespace ProductInventory.Controllers
             return await _mediatR.Send(new GetProductByIdQuery(id));
         }
 
-        //[HttpPut]
-        //[Route("products/{id}")]
-        //public Product UpdateProductInfo(int id,Product product)
-        //{
-        //    Product newp = _applicationDbContext.products.Find(id);
-        //    newp.Price = product.Price;
-        //    newp.Quantity = product.Quantity;
-        //    newp.ProductName = product.ProductName;
-        //    newp.Description = product.Description;
-        //    _applicationDbContext.Entry(newp).State = EntityState.Modified;
-        //    _applicationDbContext.SaveChanges();
-        //    return _applicationDbContext.products.Find(id);
-        //}
+        [HttpPut]
+        [Route("products/{id}")]
+        public async Task<Product> UpdateProductInfo(int id, Product product)
+        {
+            return await _mediatR.Send(new UpdateProductByIdCommand(product));
+        }
 
-        //[HttpDelete]
-        //[Route("products/{id}")]
-        //public IActionResult DeleteProductById(int id)
-        //{
-        //    Product newp = _applicationDbContext.products.Find(id);
-        //    _applicationDbContext.Remove(newp);
-        //    _applicationDbContext.SaveChanges();
-        //    return NoContent();
-        //}
+        [HttpDelete]
+        [Route("products/{id}")]
+        public async Task<IActionResult> DeleteProductById(int id)
+        {
+            bool isSuccess =  await _mediatR.Send(new DeleteProductByIdCommand(id));
+            if (isSuccess) {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
 
     }
 }
